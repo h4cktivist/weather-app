@@ -1,4 +1,5 @@
 import sys
+import datetime
 import requests
 import json
 
@@ -22,6 +23,10 @@ class City(db.Model):
 
 @app.route('/')
 def index():
+    def get_date(timezone):
+        tz = datetime.timezone(datetime.timedelta(seconds=int(timezone)))
+        return datetime.datetime.now(tz=tz).time().hour
+
     cities = City.query.all()
     weather = []
 
@@ -33,6 +38,7 @@ def index():
         weather_info = {'degrees': f"{content['main']['temp']}",
                         'state': f"{content['weather'][0]['main']}",
                         'city': f"{content['name']}",
+                        'time': get_date(content['timezone']),
                         'id': f"{city.id}"}
         weather.append(weather_info)
 

@@ -29,7 +29,17 @@
 
     {% for w in weather %}
 
-        <div class="card evening-morning">
+        <div class="
+            {% if 6 <= w['time'] <= 10 %}
+                card evening-morning
+            {% elif 13 <= w['time'] <= 18 %}
+                card day
+            {% elif 18 <= w['time'] <= 21 %}
+                card evening-morning
+            {% else %}
+                card night
+            {% endif %}"
+        >
             <div class="delete-wrapper">
                 <form action="/delete/{{ w.id }}" method="POST">
                     <input type="hidden" name="id" value="{{ w.id }}">
